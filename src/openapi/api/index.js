@@ -6,8 +6,9 @@ const types = require('./types');
 const reviews = require('./reviews');
 const logs = require('./logs');
 const monitoring = require('./monitoring');
-
+const diccionarioLinguistico = require('./diccionarioLinguistico');
 module.exports = {
+    ...diccionarioLinguistico,
     ...assignments,
     ...users,
     ...staticData,

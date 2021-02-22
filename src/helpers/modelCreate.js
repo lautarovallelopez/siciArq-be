@@ -17,7 +17,7 @@ const toLower = require('lodash/toLower');
 // needed by composing a new object out of the one returned by this function ;)
 
 const ORDER_BY = [{
-    column: 'createdAt',
+    column: 'FECHA_ALTA',
     order: 'asc'
 }];
 class ModelCreate {
@@ -52,7 +52,7 @@ class ModelCreate {
         const objectToSave = {};
         //eslint-disable-next-line
         map(props, (value, index) => {
-            if (includes(this.selectableProps, index)) {
+            if (includes(this.selectableProps, `${this.tableName}.${index}`)) {
                 if (isObject(value)) {
                     assign(objectToSave, {[index]: JSON.stringify(value)});
                 } else {
@@ -67,9 +67,7 @@ class ModelCreate {
 
     insertOne (props) {
         const objectToSave = this.jsonToString(props);
-        objectToSave.id = uuid();
-        objectToSave.__v = 0;
-        objectToSave.createdAt = new Date();
+        objectToSave.FECHA_ALTA = new Date();
         if (this.transaction) {
             return this.transaction(this.tableName).insert(objectToSave).returning(this.selectableProps)
                 .timeout(this.timeout);
@@ -113,8 +111,9 @@ class ModelCreate {
         return this.knex.select(columns).from(this.tableName).orderBy(orderBy).timeout(this.timeout);
     }
 
-    findById (id, columns = this.selectableProps, orderBy = ORDER_BY) {
-        return this.knex.select(columns).from(this.tableName).where({id}).orderBy(orderBy).timeout(this.timeout);
+    async findById (ids, columns = this.selectableProps, orderBy = ORDER_BY) {
+        const row = await this.knex.select(columns).from(this.tableName).where(ids).orderBy(orderBy).timeout(this.timeout);
+        return head(row)
     }
 
     findByTerm (termValue, termKeys, filters, columns = this.selectableProps) {
@@ -137,21 +136,20 @@ class ModelCreate {
     }
 
     async updateOne (filters, props) {
-        delete props.id;
-        const object = await this.findOne(filters);
-        if (object && object.__v !== undefined) {
+        //const object = await this.findOne(filters);
+        /*if (object && object.__v !== undefined) {
             props.__v = object.__v;
             props.__v += 1;
         } else {
             props.__v = 0;
-        }
+        }*/
 
         const objectToSave = this.jsonToString(props);
         if (this.transaction) {
             const modifiedObject = await this.transaction(this.tableName)
                 .update(objectToSave).from(this.tableName).where(filters)
                 .returning(this.selectableProps).timeout(this.timeout);
-            return head(modifiedObject);
+            return modifiedObject;
         }
         const modifiedObject = await this.knex.update(objectToSave).from(this.tableName).where(filters)
             .returning(this.selectableProps).timeout(this.timeout);
