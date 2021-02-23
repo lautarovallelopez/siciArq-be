@@ -12,7 +12,7 @@ const selectableProps = [
     `${tableName}.OBSERVACION`,
     `${tableName}.DOMINIO`,
     `${tableName}.SUPERVISADO`,
-    `${tableName}.ID_USUARIO`,
+    `${tableName}.ID_USUARIO_ALTA`,
     `${tableName}.FECHA_ALTA`
 ];
 
@@ -31,6 +31,7 @@ class DiccionarioLinguistico extends ModelCreate{
             .from(this.tableName)
             .where(filter)
             .limit(PAGE_SIZE)
+            .orderBy([{ column: 'FECHA_ALTA', order: 'desc' }])
             .offset(PAGE_SIZE * toNumber(skip));
     }
     async countRows (filters = {}) {

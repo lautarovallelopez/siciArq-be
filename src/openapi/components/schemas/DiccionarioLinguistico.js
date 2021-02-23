@@ -29,7 +29,7 @@ module.exports = {
             type: 'integer',
             nullable: true
         },
-        ID_USUARIO: {
+        ID_USUARIO_ALTA: {
             type: 'integer',
             nullable: false
         }

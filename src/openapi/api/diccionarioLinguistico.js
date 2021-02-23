@@ -32,7 +32,7 @@ module.exports = {
                                             OBSERVACION: null,
                                             DOMINIO: null,
                                             SUPERVISADO: null,
-                                            ID_USUARIO: 1,
+                                            ID_USUARIO_ALTA: 1,
                                             FECHA_ALTA: '2021-02-08T03:00:00.000Z'
                                         }
                                     }
