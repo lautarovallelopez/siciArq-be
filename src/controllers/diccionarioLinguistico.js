@@ -61,8 +61,9 @@ class DiccionarioLinguisticoController{
     static async delete(req, res, next){
         try {
             await DiccionarioLinguistico.startTransaction();
-            await DiccionarioLinguistico.deletedOne(req.query);
+            await DiccionarioLinguistico.deletedOne(req.params);
             await DiccionarioLinguistico.commitTransaction();
+            console.log(req.params);
             res.send({success: true});
         } catch(err) {
             next(err);

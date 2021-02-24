@@ -120,40 +120,6 @@ module.exports = {
                     content : {'application/json': {schema:{$ref:'#/components/schemas/Error'}}}
                 }
             }
-        },
-        delete: {
-            summary: 'Delete diccionario linguistico',
-            security: [],
-            parameters: [
-                {
-                    in: 'query',
-                    required: true,
-                    name: 'DESCRIPCION_ORIGINAL',
-                    schema: {type: 'string'}
-                },
-                {
-                    in: 'query',
-                    required: true,
-                    name: 'ID_TIPOLOGIA_DE_DICCIONARIO',
-                    schema: {type: 'string'}
-                },
-                {
-                    in: 'query',
-                    required: true,
-                    name: 'ID_VARIABLE',
-                    schema: {type: 'string'}
-                }
-            ],
-            responses: {
-                200: {
-                    description: 'ok',
-                    content: {'application/json': {schema: {type: 'object'}}}
-                },
-                default: {
-                    description: 'Error',
-                    content : {'application/json': {schema:{$ref:'#/components/schemas/Error'}}}
-                }
-            }
         }
     },
     '/api/diccionarioLinguistico/{DESCRIPCION_ORIGINAL}/{ID_TIPOLOGIA_DE_DICCIONARIO}/{ID_VARIABLE}' : {
@@ -195,6 +161,40 @@ module.exports = {
                 default: {
                     description: 'Error',
                     content: {'application/json': {schema: {$ref: '#/components/schemas/Error'}}}
+                }
+            }
+        },
+        delete: {
+            summary: 'Delete diccionario linguistico',
+            security: [],
+            parameters: [
+                {
+                    in: 'path',
+                    required: true,
+                    name: 'DESCRIPCION_ORIGINAL',
+                    schema: {type: 'string'}
+                },
+                {
+                    in: 'path',
+                    required: true,
+                    name: 'ID_TIPOLOGIA_DE_DICCIONARIO',
+                    schema: {type: 'string'}
+                },
+                {
+                    in: 'path',
+                    required: true,
+                    name: 'ID_VARIABLE',
+                    schema: {type: 'string'}
+                }
+            ],
+            responses: {
+                200: {
+                    description: 'ok',
+                    content: {'application/json': {schema: {type: 'object'}}}
+                },
+                default: {
+                    description: 'Error',
+                    content : {'application/json': {schema:{$ref:'#/components/schemas/Error'}}}
                 }
             }
         }
