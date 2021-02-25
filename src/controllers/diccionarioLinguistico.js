@@ -48,8 +48,9 @@ class DiccionarioLinguisticoController{
     static async update(req, res, next){
         try{
             await DiccionarioLinguistico.startTransaction();
-            const updatedOne = await DiccionarioLinguistico.updateOne(req.query, req.body);
+            const updatedOne = await DiccionarioLinguistico.updateOne(req.params, req.body);
             await DiccionarioLinguistico.commitTransaction();
+            console.log(updatedOne);
             res.send({
                 success: true,
                 updatedOne
@@ -63,7 +64,7 @@ class DiccionarioLinguisticoController{
             await DiccionarioLinguistico.startTransaction();
             await DiccionarioLinguistico.deletedOne(req.params);
             await DiccionarioLinguistico.commitTransaction();
-            console.log(req.params);
+            
             res.send({success: true});
         } catch(err) {
             next(err);

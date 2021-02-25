@@ -149,7 +149,7 @@ class ModelCreate {
             const modifiedObject = await this.transaction(this.tableName)
                 .update(objectToSave).from(this.tableName).where(filters)
                 .returning(this.selectableProps).timeout(this.timeout);
-            return modifiedObject;
+            return head(modifiedObject);
         }
         const modifiedObject = await this.knex.update(objectToSave).from(this.tableName).where(filters)
             .returning(this.selectableProps).timeout(this.timeout);
@@ -179,17 +179,17 @@ class ModelCreate {
         return Promise.reject('not a valid array of data');
     }
 
-    deleteOne (id) {
+    deletedOne (ids) {
         if (this.transaction) {
             return this.transaction(this.tableName).update({
-                deleted: true,
-                deletedAt: new Date()
-            }).where({id}).timeout(this.timeout);
+                FECHA_BAJA: new Date(),
+                ID_USUARIO_BAJA: 1
+            }).from(this.tableName).where(ids).timeout(this.timeout);
         }
         return this.knex.update({
-            deleted: true,
-            deletedAt: new Date()
-        }).from(this.tableName).where({id}).timeout(this.timeout);
+            FECHA_BAJA: new Date(),
+            ID_USUARIO_BAJA: 1
+        }).from(this.tableName).where(ids).timeout(this.timeout);
     }
 
     deleteMany (ids) {
