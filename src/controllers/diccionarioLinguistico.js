@@ -1,6 +1,7 @@
 const {DiccionarioLinguistico} = include('/models');
 const head = require('lodash/head');
 const {PAGE_SIZE} = process.env;
+const words = require('lodash/words');
 class DiccionarioLinguisticoController{
     static async fetch(req, res, next){
         try {
@@ -34,8 +35,9 @@ class DiccionarioLinguisticoController{
     }
     static async create(req, res, next){
         try {
+            //console.log(words())
             await DiccionarioLinguistico.startTransaction();
-            const insertedOne = head(await DiccionarioLinguistico.insertOne(req.body));
+            const insertedOne = await DiccionarioLinguistico.insertOne(req.body);
             await DiccionarioLinguistico.commitTransaction();
             res.send({
                 success: true,
@@ -62,7 +64,7 @@ class DiccionarioLinguisticoController{
     static async delete(req, res, next){
         try {
             await DiccionarioLinguistico.startTransaction();
-            await DiccionarioLinguistico.deletedOne(req.params);
+            await DiccionarioLinguistico.deletedOne(req.params, {ID_USUARIO_BAJA: 1});
             await DiccionarioLinguistico.commitTransaction();
             
             res.send({success: true});

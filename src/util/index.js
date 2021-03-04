@@ -6,7 +6,7 @@ const pick = require('lodash/pick');
 const reduce = require('lodash/reduce');
 const toLower = require('lodash/toLower');
 const values = require('lodash/values');
-
+const concatTableName = require('./concatTableName');
 const reducedList = (array, filterKey, keyData) => reduce(array, (objectsByKeyValue, obj) => {
     const value = join(values(pick(obj, filterKey)), '');
     objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat({
@@ -28,5 +28,6 @@ const buildArchQuery = query => {
 
 module.exports = {
     buildArchQuery,
-    reducedList
+    reducedList,
+    ...concatTableName
 };

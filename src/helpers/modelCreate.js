@@ -8,7 +8,8 @@ const isArray = require('lodash/isArray');
 const isObject = require('lodash/isObject');
 const map = require('lodash/map');
 const toLower = require('lodash/toLower');
-
+const get = require('lodash/get');
+const {concatTableName} = include('util');
 // The model that uses Knexjs to store and retrieve data from a
 // database using the provided `knex` instance.
 // Custom functionality can be composed on top of this set of models.
@@ -22,13 +23,19 @@ const ORDER_BY = [{
 }];
 class ModelCreate {
     constructor({
-        knex, name, tableName, selectableProps, timeout
+        knex, name, tableName, selectableProps, timeout, orderBy
     }) {
         this.knex = knex || {},
         this.name = name || 'name',
         this.tableName = tableName || 'tablename',
         this.selectableProps = selectableProps || [],
         this.timeout = timeout || 10000;
+        this.orderBy = orderBy || [
+            {
+                column: 'FECHA_ALTA',
+                order: 'desc'
+            }
+        ]
     }
 
     async startTransaction () {
@@ -52,7 +59,7 @@ class ModelCreate {
         const objectToSave = {};
         //eslint-disable-next-line
         map(props, (value, index) => {
-            if (includes(this.selectableProps, `${this.tableName}.${index}`)) {
+            if (includes(this.selectableProps, index)) {
                 if (isObject(value)) {
                     assign(objectToSave, {[index]: JSON.stringify(value)});
                 } else {
@@ -65,12 +72,12 @@ class ModelCreate {
         return objectToSave;
     }
 
-    insertOne (props) {
+    async insertOne (props) {
         const objectToSave = this.jsonToString(props);
         objectToSave.FECHA_ALTA = new Date();
         if (this.transaction) {
-            return this.transaction(this.tableName).insert(objectToSave).returning(this.selectableProps)
-                .timeout(this.timeout);
+            return head( await this.transaction(this.tableName).insert(objectToSave).returning(this.selectableProps)
+                .timeout(this.timeout));
         }
         return this.knex.insert(objectToSave).returning(this.selectableProps)
             .into(this.tableName).timeout(this.timeout);
@@ -94,7 +101,7 @@ class ModelCreate {
         return Promise.reject('not a valid array of data');
     }
 
-    find (filters = {}, columns = this.selectableProps, orderBy = ORDER_BY) {
+    find (filters = {}, columns = this.selectableProps, orderBy = this.orderBy) {
         return this.knex.select(columns).from(this.tableName)
             .where(filters).orderBy(orderBy).timeout(this.timeout);
     }
@@ -147,8 +154,11 @@ class ModelCreate {
         const objectToSave = this.jsonToString(props);
         if (this.transaction) {
             const modifiedObject = await this.transaction(this.tableName)
-                .update(objectToSave).from(this.tableName).where(filters)
-                .returning(this.selectableProps).timeout(this.timeout);
+                .update(objectToSave)
+                .from(this.tableName)
+                .where(filters)
+                .returning(this.selectableProps)
+                .timeout(this.timeout);
             return head(modifiedObject);
         }
         const modifiedObject = await this.knex.update(objectToSave).from(this.tableName).where(filters)
@@ -179,11 +189,11 @@ class ModelCreate {
         return Promise.reject('not a valid array of data');
     }
 
-    deletedOne (ids) {
+    deletedOne (ids, ID_USUARIO_BAJA={}) {
         if (this.transaction) {
             return this.transaction(this.tableName).update({
                 FECHA_BAJA: new Date(),
-                ID_USUARIO_BAJA: 1
+                ...ID_USUARIO_BAJA
             }).from(this.tableName).where(ids).timeout(this.timeout);
         }
         return this.knex.update({
@@ -224,6 +234,11 @@ class ModelCreate {
             console.log(filters, props);
             return false;
         }
+    }
+    async countRows (filters = {}) {
+        const result = await this.knex(this.tableName).count().where(filters).timeout(this.timeout);
+        const count = get(result, '[0].COUNT(*)');
+        return count;
     }
 }
 

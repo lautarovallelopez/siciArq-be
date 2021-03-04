@@ -69,6 +69,10 @@ module.exports = {
                             }
                         }
                     }
+                },
+                default: {
+                    description: 'Error',
+                    content: {'application/json': {schema: {$ref: '#/components/schemas/Error'}}}
                 }
             }
         }
@@ -141,7 +145,14 @@ module.exports = {
             responses: {
                 200: {
                     description: 'ok',
-                    content: {'application/json': {schema: {type: 'object'}}}
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                properties: {success: {type: 'boolean'}}
+                            }
+                        }
+                    }
                 },
                 default: {
                     description: 'Error',

@@ -21,7 +21,10 @@ const Visit = require('./Visit');
 const Household = require('./Household');
 const Member = require('./Member');
 const Monitoring = require('./Monitoring');
+const RolSici = require('./RolSici');
 const DiccionarioLinguistico = require('./DiccionarioLinguistico');
+const TipoDeRelacion = require('./TipoDeRelacion');
+const TipoDiccionarioLinguistico = require('./TipoDiccionarioLinguistico');
 module.exports = {
     ArrayString: {
         type: 'array',
@@ -156,5 +159,8 @@ module.exports = {
     Household,
     Member,
     Monitoring,
-    DiccionarioLinguistico
+    DiccionarioLinguistico,
+    RolSici,
+    TipoDeRelacion,
+    TipoDiccionarioLinguistico
 };
