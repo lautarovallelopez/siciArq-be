@@ -1,8 +1,8 @@
 module.exports = {
-    '/api/tipoDeRelacion' : {
+    '/api/relation-type' : {
         get : {
             security : [],
-            summary : 'Listar todos los tipos de relaciones',
+            summary : 'Get all relations types',
             responses : {
                 200 : {
                     description : 'ok',
@@ -11,12 +11,10 @@ module.exports = {
                             schema : {
                                 type : 'object',
                                 properties: {
-                                    tiposDeRelaciones: {
+                                    relations: {
                                         type: 'array',
-                                        items:{$ref:'#/components/schemas/TipoDeRelacion'}
-                                    },
-                                    limit: {type: 'integer'},
-                                    total: {type: 'integer'}
+                                        items:{$ref:'#/components/schemas/RelationType'}
+                                    }
                                 }
                             }
                         }
@@ -29,12 +27,12 @@ module.exports = {
             }
         },
         post: {
-            summary: 'Crear una nuevo tipo de relacion.',
+            summary: 'Create a new relation type',
             security: [],
             requestBody:{
                 description: 'El nuevo tipo de relacion',
                 required: true,
-                content: {'application/json': {schema: {$ref:'#/components/schemas/TipoDeRelacion'}}}
+                content: {'application/json': {schema: {$ref:'#/components/schemas/RelationType'}}}
             },
             responses : {
                 200 : {
@@ -45,7 +43,7 @@ module.exports = {
                                 type : 'object',
                                 properties: {
                                     success: {type: 'boolean'},
-                                    insertedOne: {$ref:'#/components/schemas/TipoDeRelacion'}
+                                    insertedOne: {$ref:'#/components/schemas/RelationType'}
                                 }
                             }
                         }
@@ -58,7 +56,7 @@ module.exports = {
             }
         }
     },
-    '/api/tipoDeRelacion/{ID_TIPO_RELACION}':{
+    '/api/relation-type/{ID_TIPO_RELACION}':{
         get : {
             summary : 'Consultar una tipo de relacion',
             security : [],
@@ -77,7 +75,7 @@ module.exports = {
                         'application/json': {
                             schema: {
                                 type: 'object',
-                                properties: {tipoDiccionario: {$ref:'#/components/schemas/TipoDeRelacion'}}
+                                properties: {tipoDiccionario: {$ref:'#/components/schemas/RelationType'}}
                             }
                         }
                     }
@@ -102,7 +100,7 @@ module.exports = {
             requestBody:{
                 description: 'Cambios de relacion',
                 required: true,
-                content: {'application/json': {schema: {$ref:'#/components/schemas/TipoDeRelacion'}}}
+                content: {'application/json': {schema: {$ref:'#/components/schemas/RelationType'}}}
             },
             responses : {
                 200 : {
@@ -113,7 +111,7 @@ module.exports = {
                                 type : 'object',
                                 properties: {
                                     success: {type: 'boolean'},
-                                    response: {$ref:'#/components/schemas/TipoDeRelacion'}
+                                    response: {$ref:'#/components/schemas/RelationType'}
                                 }
                             }
                         }

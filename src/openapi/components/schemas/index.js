@@ -23,7 +23,7 @@ const Member = require('./Member');
 const Monitoring = require('./Monitoring');
 const RolSici = require('./RolSici');
 const DiccionarioLinguistico = require('./DiccionarioLinguistico');
-const TipoDeRelacion = require('./TipoDeRelacion');
+const RelationType = require('./RelationType');
 const TipoDiccionarioLinguistico = require('./TipoDiccionarioLinguistico');
 module.exports = {
     ArrayString: {
@@ -161,6 +161,6 @@ module.exports = {
     Monitoring,
     DiccionarioLinguistico,
     RolSici,
-    TipoDeRelacion,
+    RelationType,
     TipoDiccionarioLinguistico
 };

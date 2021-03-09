@@ -1,14 +1,14 @@
 const ModelCreate = include('helpers/modelCreate');
-const name = 'TipoDeRelacion';
+const name = 'RelationType';
 const tableName = 'TIPOS_DE_RELACION';
 const selectableProps = [
-    `${tableName}.ID_TIPO_RELACION`,
-    `${tableName}.DESCRIPCION`,
-    `${tableName}.SUPERVISADO`,
-    `${tableName}.OBSERVACION`,
-    `${tableName}.DOMINIO`,
-    `${tableName}.ID_USUARIO_ALTA`,
-    `${tableName}.FECHA_ALTA`
+    'ID_TIPO_RELACION',
+    'DESCRIPCION',
+    'SUPERVISADO',
+    'OBSERVACION',
+    'DOMINIO',
+    'ID_USUARIO_ALTA',
+    'FECHA_ALTA'
 ];
 class RolSici extends ModelCreate{
     constructor(props){

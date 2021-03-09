@@ -21,9 +21,6 @@ module.exports = {
         ID_USUARIO_ALTA: {
             type: 'integer',
             nullable: false
-        },
-        FECHA_ALTA: {
-            type: 'object'
         }
     }
 };

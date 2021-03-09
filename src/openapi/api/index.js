@@ -9,7 +9,7 @@ const monitoring = require('./monitoring');
 const diccionarioLinguistico = require('./diccionarioLinguistico');
 const rolSici = require('./rolSici');
 const tipoDiccionarioLinguistico = require('./tipoDiccionarioLinguistico');
-const tipoDeRelacion = require('./tipoDeRelacion');
+const relationType = require('./relation-type');
 module.exports = {
     ...diccionarioLinguistico,
     ...assignments,
@@ -22,5 +22,5 @@ module.exports = {
     ...monitoring,
     ...rolSici,
     ...tipoDiccionarioLinguistico,
-    ...tipoDeRelacion
+    ...relationType
 };
